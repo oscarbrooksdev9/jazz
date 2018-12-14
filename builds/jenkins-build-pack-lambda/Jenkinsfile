@@ -447,22 +447,11 @@ def servelessDeploy(env, envBucketKey){
 }
 
 def serviceDeploy(env, envBucketKey, servicePlatform){
-  try {
-
-    if (servicePlatform == 'azure') {
-      azureDeployer.createFunction(stackName)
-
-    } else {
-      sh "serverless deploy --stage ${env} -v --bucket ${configLoader.AWS.S3[envBucketKey]} > output.log"
-    }
-    return "success"
-  } catch (ex) {
-    echo "Serverless deployment failed due to $ex"
+  if (servicePlatform == 'azure') {
+    azureDeployer.createFunction(stackName)
+  } else {
+    servelessDeploy(env, envBucketKey)
   }
-
-  def outputLog = readFile('output.log').trim()
-  echo "serverless deployment log $outputLog"
-  return outputLog
 }
 
 def addEvents(def isScheduleEnabled, def isEc2EventEnabled, def isS3EventEnabled, def isSQSEventEnabled, def isStreamEnabled, def isDynamoDbEnabled) {
