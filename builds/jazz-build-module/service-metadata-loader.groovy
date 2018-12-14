@@ -54,8 +54,8 @@ def loadServiceMetadata(service_id){
 			if(service_data.Item.SERVICE_SLACK_CHANNEL)
 				metadata['slack_channel'] = service_data.Item.SERVICE_SLACK_CHANNEL.S
 
-            if(service_data.Item.SERVICE_PLATFORM)
-              metadata['platform'] = service_data.Item.SERVICE_PLATFORM.S
+      if(service_data.Item.SERVICE_PLATFORM)
+        metadata['platform'] = service_data.Item.SERVICE_PLATFORM.S
 
 			return metadata
 		}
