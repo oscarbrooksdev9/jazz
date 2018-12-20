@@ -237,7 +237,7 @@ node() {
           sh "aws configure set profile.cloud-api.aws_secret_access_key $AWS_SECRET_ACCESS_KEY"
 
           if (servicePlatform == 'azure') {
-            azureDeployer.loadAzureConfig(runtime, eventScheduleRate, scmModule, repo_credential_id)
+            azureDeployer.loadAzureConfig(runtime, config, scmModule, repo_credential_id, isEventSchdld, isScheduleEnabled, isEc2EventEnabled, isS3EventEnabled, isSQSEventEnabled, isStreamEnabled, isDynamoDbEnabled)
 
           } else {
 
@@ -1025,6 +1025,8 @@ def loadBuildModules(buildModuleUrl) {
     echo "Environment deployment data loader module loaded successfully."
 
     azureDeployer = load "azure-deploy-module.groovy"
+    azureDeployer.initialize(configLoader)
+    echo "Azure deploy module loaded successfully."
   }
 }
 
