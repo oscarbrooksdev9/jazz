@@ -926,7 +926,7 @@ def getEventsArn(config, env) {
   }
 }
 
-def getLambdaARN(String stackName) {
+def getLambdaARN(String stackName, String servicePlatform) {
   def ARN = "";
   if (servicePlatform == 'azure') {
     azureDeployer.createFunction(stackName)
