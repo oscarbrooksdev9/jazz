@@ -3,10 +3,10 @@
   "bindings": [
     {
       "name": "event",
-      "type": "queueTrigger",
+      "type": "serviceBusTrigger",
       "direction": "in",
       "queueName": "{queue_name}",
-      "connection": "AzureWebJobsStorage"
+      "connection": "SAS_SERVICEBUS"
     }
   ]
 }
