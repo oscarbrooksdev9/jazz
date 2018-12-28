@@ -929,7 +929,6 @@ def getEventsArn(config, env) {
 def getLambdaARN(String stackName, String servicePlatform) {
   def ARN = "";
   if (servicePlatform == 'azure') {
-    azureDeployer.createFunction(stackName)
     ARN= "https://${stackName}.azurewebsites.net".toLowerCase()
     //TODO azure function ARN unknown
   } else {
