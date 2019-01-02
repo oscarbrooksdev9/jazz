@@ -237,7 +237,7 @@ node() {
           sh "aws configure set profile.cloud-api.aws_secret_access_key $AWS_SECRET_ACCESS_KEY"
 
           if (servicePlatform == 'azure') {
-            azureDeployer.loadAzureConfig(runtime, eventScheduleRate, scmModule, repo_credential_id)
+            azureDeployer.loadAzureConfig(environment_logical_id, runtime, config, scmModule, repo_credential_id, isEventSchdld, isScheduleEnabled, isEc2EventEnabled, isS3EventEnabled, isSQSEventEnabled, isStreamEnabled, isDynamoDbEnabled)
 
           } else {
 
@@ -929,7 +929,6 @@ def getEventsArn(config, env) {
 def getLambdaARN(String stackName, String servicePlatform) {
   def ARN = "";
   if (servicePlatform == 'azure') {
-    azureDeployer.createFunction(stackName)
     ARN= "https://${stackName}.azurewebsites.net".toLowerCase()
     //TODO azure function ARN unknown
   } else {
@@ -1024,7 +1023,16 @@ def loadBuildModules(buildModuleUrl) {
     environmentDeploymentMetadata = load "environment-deployment-metadata-loader.groovy"
     echo "Environment deployment data loader module loaded successfully."
 
-    azureDeployer = load "azure-deploy-module.groovy"
+    def resourceUtility = load "resource-utility.groovy"
+    resourceUtility.initialize(configLoader)
+    echo "resource util init successfully."
+
+    def azureUtility = load "azure-utility.groovy"
+    azureUtility.initialize(configLoader, resourceUtility)
+    echo "Azure util init successfully."
+    azureDeployer = load "azure-function-deploy-module.groovy"
+    azureDeployer.initialize(configLoader, azureUtility)
+    echo "Azure deploy module init successfully."
   }
 }
 
